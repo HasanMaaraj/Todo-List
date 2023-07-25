@@ -1,29 +1,28 @@
-h1 {
-    color:red;
-}
-
 #container {
     display: grid;
     grid-template-columns: minmax(150px, 1fr) minmax(400px, 4fr);
-    grid-template-rows: minmax(50px, 2fr) minmax(250px, 8fr) minmax(20px, 1fr);
+    grid-template-rows: minmax(20px, 1fr) minmax(250px, 8fr) minmax(20px, 1fr);
     height: 100vh;
 }
 
 #header {
     grid-column: 1/3;
     grid-row-start: 1;
-    background-color: blue;
+    background-color: #0FC2C0;
+    color: #262929;
 }
 
 #sidebar {
-    background-color: red;
+    background-color: hsl(63, 100%, 84%);
+    color: #000000;
 }
 
 #main-content {
-    background-color: yellow;
+    color: #000000;
 }
 
 #footer {
     grid-column: 1/3;
-    background-color: green;
+    background-color: #015958;
+    color: #FFFFFF;
 }
