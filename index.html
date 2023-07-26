@@ -10,8 +10,40 @@
         <div id="header">
             <h1>Todo List</h1>
         </div>
-        <div id="sidebar">Sidebar</div>
-        <div id="main-content"></div>
+        <div id="sidebar">
+            <h3>Projects</h3>
+            <form id="add-project-form">
+                <input type="text" name="project-title" required>
+                <button type="submit">Add project</button>
+            </form>
+            <h4>My Project</h4>
+            <ul id="projects"></ul>
+        </div>
+        <div id="main-content">
+            <form id="add-task-form">
+                <div class="form-control">
+                    <label for="task-title">Task: </label>
+                    <input type="text" id="task-title" name="task-title" required>
+                </div>
+                <div class="form-control">
+                    <label for="due-date">Due Date: </label>
+                    <input type="date" id="due-date" name="due-date">
+                </div>
+                <div class="form-control">
+                    <label for="urgency">Urgency: </label>
+                    <select name="priority" id="urgency" name="urgency">
+                        <option value="not-urgent">Not Urgent</option>
+                        <option value="urgent">Urgent</option>
+                    </select>
+                </div>
+                <div class="form-control">
+                    <label for="description">Description: </label>
+                    <textarea id="description" name="description"></textarea>
+                </div>
+                <input type="hidden" id="new-task-project-name" name="project">
+                <button type="submit">Add Task</button>
+            </form>
+        </div>
         <div id="footer">footer</div>
     </div>
 
