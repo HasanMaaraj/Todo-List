@@ -13,7 +13,8 @@
 }
 
 #sidebar {
-    background-color: hsl(63, 100%, 84%);
+    /* background-color: hsl(63, 100%, 84%); */
+    border-right: 5px solid #FBFFAD;
     color: #000000;
 }
 
