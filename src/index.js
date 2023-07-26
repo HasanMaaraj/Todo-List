@@ -10,28 +10,34 @@ const storage = (function() {
         return JSON.parse(localStorage.getItem('projects'));
     };
 
-    const saveProjects = function(projects) {
-        // Save the projects
-        localStorage.setItem('projects', JSON.stringify(projects));
-    }
-
-    const removeProject = function(title) {
-        // Delete the project
-        let projects = getProjects();
-        delete projects[title]
-        saveProjects(projects);
-    }
-
     const projectsDisplay = (function() {
+        const popProject = function(project) {
+            // Delete chosen item from the list display
+            document.querySelector(`li[data-name="${project}"]`).remove()
+        }
+
         const appendProject = function(project) {
-            // Create a list item and append it the projects lis
+            // Create a list item and append it the projects list
             const projectsList = document.querySelector('#projects');
             const listItem = document.createElement('li');
             listItem.dataset.name = project;
             listItem.textContent = project;
+            // Add delete buttons to projects other than the default project
+            if (project !== "My Project"){
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.className = 'delete-button';
+                deleteButton.dataset.name = project;
+                listItem.appendChild(deleteButton);
+                deleteButton.addEventListener('click', () => {
+                    removeProject(project);
+                    popProject(project);
+                })
+            }
             projectsList.appendChild(listItem);
         }
 
+        
         const displayProjects = (function() {
             // Loop through the projects and append each one
             const projects = getProjects();
@@ -39,9 +45,21 @@ const storage = (function() {
                 appendProject(project);
             }
         })();
-
+        
         return {appendProject};
     })();
+    
+    const saveProjects = function(projects) {
+        // Save the projects
+        localStorage.setItem('projects', JSON.stringify(projects));
+    }
+    
+    const removeProject = function(title) {
+        // Delete the project
+        let projects = getProjects();
+        delete projects[title]
+        saveProjects(projects);
+    }
     
     const addProject = function(title) {
         // Add a project to the projects object and save it
@@ -51,7 +69,7 @@ const storage = (function() {
         projectsDisplay.appendProject(title);
     }
 
-    return {getProjects, addProject, removeProject, saveProjects};
+    return {getProjects, addProject, saveProjects};
 })();
 
 document.querySelector('#add-project-form').addEventListener('submit', (e) => {
