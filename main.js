@@ -116,7 +116,7 @@ eval("\n\n/* istanbul ignore next  */\nfunction styleTagTransform(css, styleElem
   \**********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n\n\n//# sourceURL=webpack://todo-list/./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n\nconst storage = (function() {\n    const getProjects = function() {\n        if (!localStorage.getItem('projects')) {\n            localStorage.setItem('projects', JSON.stringify({}))\n        }\n        return localStorage.getItem('projects');\n    };\n    \n    const saveProjects = function(projects) {\n        localStorage.setItem('projects', JSON.stringify(projects))\n    }\n\n    const addProject = function(title) {\n        let projects = getProjects();\n        projects[title] = [];\n        saveProjects(projects);\n    }\n\n    const removeProject = function(title) {\n        let projects = getProjects();\n        delete projects[title]\n        saveProjects(projects);\n    }\n\n    return {getProjects, addProject, removeProjects}\n})();\n\ndocument.querySelector('#add-project-form').addEventListener('submit', (e) => {\n    localStorage.getItem(projects)\n    e.preventDefault();\n    console.log(projects);\n});\n\n//# sourceURL=webpack://todo-list/./src/index.js?");
 
 /***/ })
 
