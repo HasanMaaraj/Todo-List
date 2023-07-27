@@ -84,7 +84,8 @@ const storage = (function() {
                     deleteButton.className = 'delete-button';
                     deleteButton.dataset.name = project;
                     listItem.appendChild(deleteButton);
-                    deleteButton.addEventListener('click', () => {
+                    deleteButton.addEventListener('click', e => {
+                        e.stopPropagation();
                         removeProject(project);
                         popProject(project);
                     })
