@@ -3,22 +3,50 @@ import './style.css'
 
 
 const storage = (function() {
+
+    const getProjects = function() {
+        // If there is no local storage create one with default project
+        if (!localStorage.getItem('projects')) {
+            localStorage.setItem('projects', JSON.stringify({'My Project':[]}));
+        }
+        // Return the local storage projects
+        return JSON.parse(localStorage.getItem('projects'));
+    };
+    
+    const saveProjects = function(projects) {
+        // Save the projects
+        localStorage.setItem('projects', JSON.stringify(projects));
+    }
+
+
     const taskStorage = (function(){
         const taskFactory = function(title, date, urgency, description) {
-            return {title, date, urgency, description}
+            return {
+                title,
+                date: new Date(date),
+                urgency,
+                description
+            }
         }
+
+        const AddTask = function(project, title, date, urgency, description) {
+            const task = taskFactory(title, date, urgency, description);
+            const projects = getProjects();
+            projects[project].push(task);
+            saveProjects(projects);
+        }
+
+        const getProjectsTasks = function(project) {
+            const projects = JSON.parse(localStorage.getItem('projects'));
+            const tasks = projects[project]
+            return tasks;
+        }
+
     })();
 
 
     const projectStorage = (function(){
-        const getProjects = function() {
-            // If there is no local storage create one with default project
-            if (!localStorage.getItem('projects')) {
-                localStorage.setItem('projects', JSON.stringify({'My Project':[]}))
-            }
-            // Return the local storage projects
-            return JSON.parse(localStorage.getItem('projects'));
-        };
+        
     
         const projectsDisplay = (function() {
             const popProject = function(project) {
@@ -29,7 +57,7 @@ const storage = (function() {
             const clearProjectDisplay = function() {
                 const projectDisplay = document.querySelector('#project-display');
                 Array.from(projectDisplay.childNodes).forEach(node => {
-                    node.remove()
+                    node.remove();
                 });
             }
     
@@ -79,15 +107,12 @@ const storage = (function() {
             return {appendProject};
         })();
         
-        const saveProjects = function(projects) {
-            // Save the projects
-            localStorage.setItem('projects', JSON.stringify(projects));
-        }
+        
         
         const removeProject = function(title) {
             // Delete the project
             let projects = getProjects();
-            delete projects[title]
+            delete projects[title];
             saveProjects(projects);
         }
         
@@ -103,7 +128,7 @@ const storage = (function() {
 
     })();
 
-    return {taskStorage, projectStorage}
+    return {taskStorage, projectStorage};
 })();
 
 document.querySelector('#add-project-form').addEventListener('submit', (e) => {
