@@ -86,6 +86,9 @@ const storage = (function() {
                     listItem.appendChild(deleteButton);
                     deleteButton.addEventListener('click', e => {
                         e.stopPropagation();
+                        if (document.querySelector('.project-header').textContent === project) {
+                            displayProject('My Project');
+                        }
                         removeProject(project);
                         popProject(project);
                     })
