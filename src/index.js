@@ -13,7 +13,24 @@ const storage = (function() {
     const projectsDisplay = (function() {
         const popProject = function(project) {
             // Delete chosen item from the list display
-            document.querySelector(`li[data-name="${project}"]`).remove()
+            document.querySelector(`li[data-name="${project}"]`).remove();
+        }
+
+        const clearProjectDisplay = function() {
+            const projectDisplay = document.querySelector('#project-display');
+            Array.from(projectDisplay.childNodes).forEach(node => {
+                node.remove()
+            });
+        }
+
+        const displayProject = function(project) {
+            clearProjectDisplay();
+            const projectDisplay = document.querySelector('#project-display');
+            const projectHeader = document.createElement('h3');
+            projectHeader.textContent = project;
+            projectHeader.className = 'project-header';
+            document.querySelector('#new-task-project-name').value = project;
+            projectDisplay.appendChild(projectHeader);
         }
 
         const appendProject = function(project) {
@@ -34,6 +51,9 @@ const storage = (function() {
                     popProject(project);
                 })
             }
+            listItem.addEventListener('click', () => {
+                displayProject(project);
+            })
             projectsList.appendChild(listItem);
         }
 
