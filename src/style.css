@@ -1,3 +1,11 @@
+:root {
+    --primary-color: #0FC2C0;
+    --secondary-color: #015958;
+    --primary-font-color: #262929;
+    --secondary-font-color: #fff;
+
+}
+
 #container {
     display: grid;
     grid-template-columns: minmax(150px, 1fr) minmax(400px, 4fr);
@@ -8,8 +16,8 @@
 #header {
     grid-column: 1/3;
     grid-row-start: 1;
-    background-color: #0FC2C0;
-    color: #262929;
+    background-color: var(--primary-color);
+    color: var(--primary-font-color);
 }
 
 #sidebar {
@@ -24,6 +32,24 @@
 
 #footer {
     grid-column: 1/3;
-    background-color: #015958;
-    color: #FFFFFF;
+    background-color: var(--secondary-color);
+    color: var(--secondary-font-color);
+}
+
+#tasks-display {
+    display: grid;
+    justify-content: center;
+    gap: 20px;
+}
+
+.task {
+    display: grid;
+    background-color: var(--primary-color);
+    color: var(--primary-font-color);
+    border-radius: 20px;
+    padding: 10px;
+    width: 500px;
+    grid-auto-rows: 70px;
+    font-size: 1.5rem;
+    grid-template-columns: repeat(5, 1fr);
 }
