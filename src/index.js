@@ -86,6 +86,7 @@ const display = (function(){
             taskDiv.dataset.project = project;
             const index = storage.taskStorage.getProjectsTasks(project).map(task => task.title).indexOf(task.title);
             taskDiv.dataset.index = index;
+            // Create and append complete button
             const completeButton = document.createElement('button');
             completeButton.className = 'complete-button';
             completeButton.dataset.project = project;
@@ -94,7 +95,6 @@ const display = (function(){
             completeButton.addEventListener('click', () => {
                 const projects = storage.projectStorage.getProjects();
                 const task = projects[completeButton.dataset.project][parseInt(completeButton.dataset.index)];
-                console.log(task)
                 if (completeButton.textContent === 'Mark as Uncompleted') {
                     task.isComplete = false;
                 } else if (completeButton.textContent === 'Mark as Completed') {
@@ -102,7 +102,6 @@ const display = (function(){
                 }
                 completeButton.textContent = completeButton.textContent === 'Mark as Uncompleted'? 'Mark as Completed':'Mark as Uncompleted';
                 storage.projectStorage.saveProjects(projects);
-                console.log(task)
             })
             taskDiv.appendChild(completeButton);
             // Create and append task title div
@@ -120,6 +119,20 @@ const display = (function(){
             taskUrgency.textContent = task.urgency;
             taskUrgency.className = 'task-urgency';
             taskDiv.appendChild(taskUrgency);
+            // Create and append delete button
+            const deleteButton = document.createElement('button');
+            deleteButton.className = 'delete-button';
+            deleteButton.dataset.project = project;
+            deleteButton.dataset.index = index;
+            deleteButton.textContent = 'Delete';
+            deleteButton.addEventListener('click', () => {
+                const projects = storage.projectStorage.getProjects();
+                const project = projects[completeButton.dataset.project];
+                project.splice(deleteButton.dataset.index, 1)
+                storage.projectStorage.saveProjects(projects);
+                displayProjectTasks(completeButton.dataset.project);
+            })
+            taskDiv.appendChild(deleteButton);
             // Craete and append task descreption div
             const taskDescription = document.createElement('div');
             taskDescription.textContent = task.description;
