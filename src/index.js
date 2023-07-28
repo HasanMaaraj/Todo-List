@@ -86,6 +86,25 @@ const display = (function(){
             taskDiv.dataset.project = project;
             const index = storage.taskStorage.getProjectsTasks(project).map(task => task.title).indexOf(task.title);
             taskDiv.dataset.index = index;
+            const completeButton = document.createElement('button');
+            completeButton.className = 'complete-button';
+            completeButton.dataset.project = project;
+            completeButton.dataset.index = index;
+            completeButton.textContent = task.isComplete ? 'Mark as Uncompleted':'Mark as completed';
+            completeButton.addEventListener('click', () => {
+                const projects = storage.projectStorage.getProjects();
+                const task = projects[completeButton.dataset.project][parseInt(completeButton.dataset.index)];
+                console.log(task)
+                if (completeButton.textContent === 'Mark as Uncompleted') {
+                    task.isComplete = false;
+                } else if (completeButton.textContent === 'Mark as Completed') {
+                    task.isComplete = true;
+                }
+                completeButton.textContent = completeButton.textContent === 'Mark as Uncompleted'? 'Mark as Completed':'Mark as Uncompleted';
+                storage.projectStorage.saveProjects(projects);
+                console.log(task)
+            })
+            taskDiv.appendChild(completeButton);
             // Create and append task title div
             const taskTitle = document.createElement('div');
             taskTitle.textContent = task.title;
