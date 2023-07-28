@@ -1,5 +1,5 @@
 import './style.css'
-
+import { compareAsc, format, parseISO } from 'date-fns'
 
 
 const storage = (function() {
@@ -50,7 +50,7 @@ const storage = (function() {
         }
 
         const AddTask = function(project, title, date, urgency, description) {
-            // Create tas object and store in localStorage
+            // Create task object and store in localStorage
             const task = taskFactory(title, date, urgency, description);
             const projects = storage.projectStorage.getProjects();
             projects[project].push(task);
@@ -75,12 +75,17 @@ const storage = (function() {
 const display = (function(){
 
     const tasksDisplay = (function(){
+        const clearTasksDisplay = function() {
+            Array.from(document.querySelector('#tasks-display').childNodes).forEach(node => node.remove());
+        }
 
-        const appendTaskDiv = function(task) {
+        const appendTaskDiv = function(project, task) {
             // Create a task div
             const taskDiv = document.createElement('div');
             taskDiv.className = 'task';
-            taskDiv.dataset.title = task.title;
+            taskDiv.dataset.project = project;
+            const index = storage.taskStorage.getProjectsTasks(project).map(task => task.title).indexOf(task.title);
+            taskDiv.dataset.index = index;
             // Create and append task title div
             const taskTitle = document.createElement('div');
             taskTitle.textContent = task.title;
@@ -88,7 +93,7 @@ const display = (function(){
             taskDiv.appendChild(taskTitle);
             // Create and append task date div
             const taskDate = document.createElement('div');
-            taskDate.textContent = task.date;
+            taskDate.textContent = format(new Date(task.date), 'yyyy-MM-dd');
             taskDate.className = 'task-date';
             taskDiv.appendChild(taskDate);
             // Create and append task urgency div
@@ -102,14 +107,18 @@ const display = (function(){
             taskDescription.className = 'task-description';
             taskDiv.appendChild(taskDescription);
             // append the task div to the .tasks-display div within the #project-display div
-            document.querySelector('.tasks-display').appendChild(taskDiv);
+            document.querySelector('#tasks-display').appendChild(taskDiv);
         }
 
         const displayProjectTasks = function(project) {
+            clearTasksDisplay();
             // Retrieve project's tasks and loop through them to append each task
             const projectTasks = storage.taskStorage.getProjectsTasks(project);
-            projectTasks.forEach(task => {
-                appendTaskDiv(task)
+            const sortedTasks = projectTasks.sort((leftTask, rightTask) => {
+                return compareAsc(new Date(leftTask.date), new Date(rightTask.date))
+            });
+            sortedTasks.forEach(task => {
+                appendTaskDiv(project, task)
             });
         }
         return {displayProjectTasks, appendTaskDiv}
@@ -138,10 +147,6 @@ const display = (function(){
             projectHeader.className = 'project-header';
             document.querySelector('#new-task-project-name').value = project;
             projectDisplay.appendChild(projectHeader);
-            // Create a tasks display div for the tasks to be appended to it
-            const tasksDiv = document.createElement('div');
-            tasksDiv.className = 'tasks-display';
-            projectDisplay.appendChild(tasksDiv);
             // Call a task display function to fill the tasks-display
             tasksDisplay.displayProjectTasks(project)
         }
@@ -170,6 +175,7 @@ const display = (function(){
             }
             listItem.addEventListener('click', () => {
                 displayProject(project);
+                tasksDisplay.displayProjectTasks(project);
             })
             projectsList.appendChild(listItem);
         }
@@ -192,6 +198,8 @@ const display = (function(){
 
 
 display.projectsDisplay.displayProject('My Project');
+display.tasksDisplay.displayProjectTasks('My Project')
+
 
 const projectsForm = document.querySelector('#add-project-form');
 projectsForm.addEventListener('submit', (e) => {
@@ -217,11 +225,6 @@ tasksForm.addEventListener('submit', e => {
     // Add task to localStorage
     storage.taskStorage.AddTask(taskProject, taskTitle, taskDate, taskUrgency, taskDescription);
     // Add task to tasks-display
-    display.tasksDisplay.appendTaskDiv({
-        title: taskTitle,
-        date: new Date(taskDate),
-        urgency: taskUrgency,
-        description: taskDescription
-    })
+    display.tasksDisplay.displayProjectTasks(taskProject);
     console.log(taskTitle, taskDate, taskUrgency, taskDescription)
 });
