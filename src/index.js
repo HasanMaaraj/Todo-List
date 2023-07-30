@@ -1,6 +1,6 @@
 import './style.css'
-import { compareAsc, format, parseISO } from 'date-fns'
-
+import { compareAsc, format} from 'date-fns'
+import Icon from './images/github.svg';
 
 const storage = (function() {
 
@@ -86,24 +86,6 @@ const display = (function(){
             taskDiv.dataset.project = project;
             const index = storage.taskStorage.getProjectsTasks(project).map(task => task.title).indexOf(task.title);
             taskDiv.dataset.index = index;
-            // Create and append complete button
-            const completeButton = document.createElement('button');
-            completeButton.className = 'complete-button';
-            completeButton.dataset.project = project;
-            completeButton.dataset.index = index;
-            completeButton.textContent = task.isComplete ? 'Mark as Uncompleted':'Mark as completed';
-            completeButton.addEventListener('click', () => {
-                const projects = storage.projectStorage.getProjects();
-                const task = projects[completeButton.dataset.project][parseInt(completeButton.dataset.index)];
-                if (completeButton.textContent === 'Mark as Uncompleted') {
-                    task.isComplete = false;
-                } else if (completeButton.textContent === 'Mark as Completed') {
-                    task.isComplete = true;
-                }
-                completeButton.textContent = completeButton.textContent === 'Mark as Uncompleted'? 'Mark as Completed':'Mark as Uncompleted';
-                storage.projectStorage.saveProjects(projects);
-            })
-            taskDiv.appendChild(completeButton);
             // Create and append task title div
             const taskTitle = document.createElement('div');
             taskTitle.textContent = task.title;
@@ -138,6 +120,24 @@ const display = (function(){
             taskDescription.textContent = task.description;
             taskDescription.className = 'task-description';
             taskDiv.appendChild(taskDescription);
+            // Create and append complete button
+            const completeButton = document.createElement('button');
+            completeButton.className = 'complete-button';
+            completeButton.dataset.project = project;
+            completeButton.dataset.index = index;
+            completeButton.textContent = task.isComplete ? 'Mark as Uncompleted':'Mark as completed';
+            completeButton.addEventListener('click', () => {
+                const projects = storage.projectStorage.getProjects();
+                const task = projects[completeButton.dataset.project][parseInt(completeButton.dataset.index)];
+                if (completeButton.textContent === 'Mark as Uncompleted') {
+                    task.isComplete = false;
+                } else if (completeButton.textContent === 'Mark as Completed') {
+                    task.isComplete = true;
+                }
+                completeButton.textContent = completeButton.textContent === 'Mark as Uncompleted'? 'Mark as Completed':'Mark as Uncompleted';
+                storage.projectStorage.saveProjects(projects);
+            })
+            taskDiv.appendChild(completeButton);
             // append the task div to the .tasks-display div within the #project-display div
             document.querySelector('#tasks-display').appendChild(taskDiv);
         }
@@ -174,7 +174,7 @@ const display = (function(){
         const displayProject = function(project) {
             clearProjectDisplay();
             const projectDisplay = document.querySelector('#project-display');
-            const projectHeader = document.createElement('h3');
+            const projectHeader = document.createElement('h2');
             projectHeader.textContent = project;
             projectHeader.className = 'project-header';
             document.querySelector('#new-task-project-name').value = project;
@@ -228,6 +228,10 @@ const display = (function(){
 })();
 
 
+const ICON = new Image();
+ICON.src = Icon;
+ICON.className = 'github-icon';
+document.querySelector('#footer').appendChild(ICON);
 
 display.projectsDisplay.displayProject('My Project');
 display.tasksDisplay.displayProjectTasks('My Project')
