@@ -1,7 +1,9 @@
 :root {
-    --primary-color: #0FC2C0;
-    --secondary-color: #15d9b299;
-    --dark-color: #015958;
+    --light-primary-color: #e0f1fd;
+    --primary-color: #75C2F6;
+    --secondary-color: #1D5D9B;
+    --dark-color: #01284f;
+    --danger-color: #FF0505;
     --primary-font-color: #262929;
     --secondary-font-color: #fff;
 }
@@ -34,9 +36,8 @@ body {
 }
 
 #sidebar {
-    /* background-color: hsl(63, 100%, 84%); */
-    border-right: 5px solid #FBFFAD;
-    color: #000000;
+    background-color: var(--light-primary-color);
+    overflow-y: scroll;
 }
 
 form#add-project-form {
@@ -65,15 +66,21 @@ form button {
 }
 
 #projects li {
+    box-shadow: 1px 1px 10px var(--secondary-color);
     display: grid;
     grid-template-columns: 3fr 1fr;
-    background-color: var(--secondary-color);
+    background-color: var(--primary-color);    
     padding: 10px;
     border-radius: 10px;
+    box-shadow: 1px 1px 10px var(--secondary-color);
 }
 
 #projects li:hover {
-    background-color: var(--primary-color);    
+    background-color: var(--secondary-color);
+}
+
+#projects li:active {
+    background-color: var(--dark-color);
 }
 
 #main-content {
@@ -86,7 +93,6 @@ form#add-task-form {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     row-gap: 20px;
-    /* justify-items: center; */
 }
 
 form#add-task-form select,
@@ -98,13 +104,12 @@ form#add-task-form input {
 
 form#add-task-form *:nth-child(4) {
     grid-column: 1/4;
-    /* display: grid; */
+    display: grid;
+    grid-template-columns: 100px 1fr;
 }
-
 
 #description {
     width: 80%;
-    /* justify-self: center; */
     height: 50px;
 }
 
@@ -113,13 +118,9 @@ form#add-task-form button {
     height: 30px;
 }
 
-/* .project-header {
-    font-size: 1.3rem;
-} */
-
 #footer {
     grid-column: 1/3;
-    background-color: var(--dark-color);
+    background-color: var(--secondary-color);
     color: var(--secondary-font-color);
     display: grid;
     justify-items: center;
@@ -129,8 +130,8 @@ form#add-task-form button {
     align-self: end;
 }
 
-#footer a:visited {
-    color: yellow;
+#footer a {
+    color: var(--primary-color);
 }
 
 #tasks-display {
@@ -150,7 +151,7 @@ form#add-task-form button {
     padding: 10px;
     width: 675px;
     font-size: 1.2rem;
-    box-shadow: 1px 1px 1px var(--secondary-color);
+    box-shadow: 1px 1px 10px var(--secondary-color);
 }
 
 .task *:not(.task-description) {
@@ -164,11 +165,10 @@ form#add-task-form button {
 }
 
 .delete-button {
-    background-color: #FF0505;
+    background-color: var(--danger-color);
     color: #fff;
     font-size: 1.1rem;
     font-weight: bold;
-    /* border-radius: 5px; */
 }
 
 .complete-button {
